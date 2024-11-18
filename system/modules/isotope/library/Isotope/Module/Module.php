@@ -17,18 +17,18 @@ use Contao\Date;
 use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\Input;
+use Contao\PageModel;
 use Contao\System;
-use Haste\Frontend\AbstractFrontendModule;
 use Haste\Util\Debug;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
+use Isotope\Helper\Frontend\AbstractFrontendModule;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
 use Isotope\RequestCache\CategoryFilter;
-use Contao\PageModel;
 
 
 /**
