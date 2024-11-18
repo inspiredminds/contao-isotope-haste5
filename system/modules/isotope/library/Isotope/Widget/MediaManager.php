@@ -18,7 +18,6 @@ use Contao\Database;
 use Contao\Environment;
 use Contao\File;
 use Contao\Files;
-use Contao\FileUpload;
 use Contao\Folder;
 use Contao\Image;
 use Contao\Input;
@@ -29,6 +28,7 @@ use Contao\Widget;
 use Isotope\Helper\Util\Debug;
 use Isotope\Model\Gallery;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Terminal42\FineUploaderBundle\FileUpload;
 
 
 /**

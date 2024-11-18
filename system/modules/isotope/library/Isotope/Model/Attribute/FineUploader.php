@@ -15,7 +15,7 @@ use Contao\Config;
 use Contao\Files;
 use Contao\Folder;
 use Contao\Widget;
-use Haste\Util\FileUpload;
+use Terminal42\FineUploaderBundle\FileUpload;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
