@@ -21,7 +21,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Hashids\Hashids;
-use Haste\Generator\RowClass;
+use Isotope\Helper\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
 use Haste\Util\Url;

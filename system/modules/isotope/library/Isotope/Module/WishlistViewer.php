@@ -13,7 +13,7 @@ namespace Isotope\Module;
 
 use Contao\Date;
 use Contao\PageModel;
-use Haste\Generator\RowClass;
+use Isotope\Helper\Generator\RowClass;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;

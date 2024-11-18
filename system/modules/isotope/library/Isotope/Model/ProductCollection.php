@@ -19,7 +19,7 @@ use Contao\MemberModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
-use Haste\Generator\RowClass;
+use Isotope\Helper\Generator\RowClass;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;

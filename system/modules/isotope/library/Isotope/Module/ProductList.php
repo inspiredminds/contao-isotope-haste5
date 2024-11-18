@@ -21,7 +21,7 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Pagination;
 use Contao\System;
-use Haste\Generator\RowClass;
+use Isotope\Helper\Generator\RowClass;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;

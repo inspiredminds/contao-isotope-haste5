@@ -19,7 +19,7 @@ use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Generator\RowClass;
+use Isotope\Helper\Generator\RowClass;
 use Haste\Util\Url;
 use Isotope\CheckoutStep\OrderConditions;
 use Isotope\CompatibilityHelper;

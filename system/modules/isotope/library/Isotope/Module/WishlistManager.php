@@ -15,7 +15,7 @@ use Contao\Controller;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
-use Haste\Generator\RowClass;
+use Isotope\Helper\Generator\RowClass;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;

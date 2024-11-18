@@ -21,7 +21,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\User;
 use Haste\Form\Form;
-use Haste\Generator\RowClass;
+use Isotope\Helper\Generator\RowClass;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;

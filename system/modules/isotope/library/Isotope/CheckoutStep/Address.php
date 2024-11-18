@@ -17,7 +17,7 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\System;
 use Contao\Widget;
-use Haste\Generator\RowClass;
+use Isotope\Helper\Generator\RowClass;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 use Isotope\Template;
