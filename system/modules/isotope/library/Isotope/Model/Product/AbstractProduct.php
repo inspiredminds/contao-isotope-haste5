@@ -13,9 +13,9 @@ namespace Isotope\Model\Product;
 
 use Contao\Database;
 use Contao\Date;
+use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Product;
@@ -333,7 +333,7 @@ abstract class AbstractProduct extends Product
             $classes[] = $type->cssClass;
         }
 
-        if ($this->alias === Input::getAutoItem('product')) {
+        if ($this->alias === Input::get('auto_item')) {
             $classes[] = 'active';
         }
 

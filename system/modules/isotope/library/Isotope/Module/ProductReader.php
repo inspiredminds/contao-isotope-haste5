@@ -17,10 +17,10 @@ use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
 use Contao\Database;
 use Contao\Environment;
+use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Input\Input;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
@@ -63,7 +63,7 @@ class ProductReader extends Module
         }
 
         // Return if no product has been specified
-        if (Input::getAutoItem('product', false, true) == '') {
+        if (Input::get('auto_item', false, true) == '') {
             if ($this->iso_display404Page) {
                 throw new PageNotFoundException();
             }
@@ -88,7 +88,7 @@ class ProductReader extends Module
         }
 
         /** @var AbstractProduct $objProduct */
-        $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
+        $objProduct = Product::findAvailableByIdOrAlias(Input::get('auto_item'));
 
         if (null === $objProduct) {
             throw new PageNotFoundException();

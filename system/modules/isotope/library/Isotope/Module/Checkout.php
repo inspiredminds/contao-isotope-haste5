@@ -15,11 +15,11 @@ use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
+use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Generator\RowClass;
-use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CheckoutStep\OrderConditions;
 use Isotope\CompatibilityHelper;
@@ -116,7 +116,7 @@ class Checkout extends Module
             return $this->generateWildcard();
         }
 
-        $this->strCurrentStep = Input::getAutoItem('step');
+        $this->strCurrentStep = Input::get('auto_item');
 
         if ($this->strCurrentStep == '') {
             $this->redirectToNextStep();

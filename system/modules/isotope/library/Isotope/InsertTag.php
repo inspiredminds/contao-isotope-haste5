@@ -11,8 +11,8 @@
 
 namespace Isotope;
 
+use Contao\Input;
 use Contao\StringUtil;
-use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -231,7 +231,7 @@ class InsertTag
         } elseif (Product::getActive() !== null) {
             return Product::getActive();
         } else {
-            return Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
+            return Product::findAvailableByIdOrAlias(Input::get('auto_item', false, true));
         }
     }
 

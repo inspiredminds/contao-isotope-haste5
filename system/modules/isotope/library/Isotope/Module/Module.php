@@ -16,9 +16,9 @@ use Contao\Database;
 use Contao\Date;
 use Contao\Environment;
 use Contao\FrontendUser;
+use Contao\Input;
 use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
-use Haste\Input\Input;
 use Haste\Util\Debug;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
@@ -191,7 +191,7 @@ abstract class Module extends AbstractFrontendModule
 
             case 'product':
                 /** @var \Isotope\Model\Product\Standard $objProduct */
-                $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
+                $objProduct = Product::findAvailableByIdOrAlias(Input::get('auto_item'));
                 $arrCategories = [0];
 
                 if ($objProduct !== null) {

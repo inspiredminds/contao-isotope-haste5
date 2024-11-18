@@ -12,8 +12,8 @@
 namespace Isotope\Module;
 
 use Contao\Database;
+use Contao\Input;
 use Contao\StringUtil;
-use Haste\Input\Input;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -55,7 +55,7 @@ class RelatedProducts extends ProductList
             return $this->generateWildcard();
         }
 
-        if (!Input::getAutoItem('product', false, true)) {
+        if (!Input::get('auto_item', false, true)) {
             return '';
         }
 
@@ -66,7 +66,7 @@ class RelatedProducts extends ProductList
         // Prevent hiding the list which is not supported in this module (see ProductList::generate())
         $this->iso_hide_list = false;
 
-        $this->currentProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
+        $this->currentProduct = Product::findAvailableByIdOrAlias(Input::get('auto_item', false, true));
 
         if ($this->currentProduct instanceof Product\Standard) {
             $this->currentProduct = $this->currentProduct->validateVariant();

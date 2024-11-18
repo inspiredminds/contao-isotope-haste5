@@ -18,10 +18,10 @@ use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Database;
 use Contao\Date;
 use Contao\Environment;
+use Contao\Input;
 use Contao\Pagination;
 use Contao\System;
 use Haste\Generator\RowClass;
-use Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
@@ -87,7 +87,7 @@ class ProductList extends Module
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && Input::getAutoItem('product', false, true) != '') {
+        if ($this->iso_hide_list && Input::get('auto_item', false, true) != '') {
             return '';
         }
 
@@ -272,7 +272,7 @@ class ProductList extends Module
             $objProduct->mergeRow($arrDefaultOptions);
 
             // Must be done after setting options to generate the variant config into the URL
-            if ($this->iso_jump_first && Input::getAutoItem('product', false, true) == '') {
+            if ($this->iso_jump_first && Input::get('auto_item', false, true) == '') {
                 throw new RedirectResponseException($objProduct->generateUrl($arrConfig['jumpTo'], true));
             }
 

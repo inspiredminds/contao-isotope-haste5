@@ -13,10 +13,10 @@ namespace Isotope\Module;
 
 use Contao\Controller;
 use Contao\Environment;
+use Contao\Input;
 use Contao\StringUtil;
 use Contao\Widget;
 use Haste\Generator\RowClass;
-use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -107,7 +107,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && Input::getAutoItem('product', false, true) != '') {
+        if ($this->iso_hide_list && Input::get('auto_item', false, true) != '') {
             return '';
         }
 

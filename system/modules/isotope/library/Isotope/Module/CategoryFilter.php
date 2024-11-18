@@ -16,9 +16,9 @@ use Contao\Database;
 use Contao\Environment;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
+use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
-use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeFilterModule;
@@ -61,7 +61,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && Input::getAutoItem('product', false, true) != '') {
+        if ($this->iso_hide_list && Input::get('auto_item', false, true) != '') {
             return '';
         }
 

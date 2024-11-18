@@ -15,11 +15,11 @@ use Contao\Controller;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Environment;
+use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Haste\Input\Input;
 use Haste\Util\Format;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
@@ -76,7 +76,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && Input::getAutoItem('product', false, true) != '') {
+        if ($this->iso_hide_list && Input::get('auto_item', false, true) != '') {
             return '';
         }
 

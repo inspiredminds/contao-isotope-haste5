@@ -13,8 +13,8 @@ namespace Isotope\Module;
 
 use Contao\Controller;
 use Contao\Environment;
+use Contao\Input;
 use Contao\System;
-use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeFilterModule;
@@ -61,7 +61,7 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && Input::getAutoItem('product', false, true) != '') {
+        if ($this->iso_hide_list && Input::get('auto_item', false, true) != '') {
             return '';
         }
 

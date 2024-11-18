@@ -19,12 +19,12 @@ use Contao\Date;
 use Contao\Environment;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
+use Contao\Input;
 use Contao\MemberModel;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Haste\Input\Input;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Frontend\ProductAction\CartAction;
 use Isotope\Frontend\ProductAction\FavoriteAction;
@@ -549,7 +549,7 @@ class Frontend extends \Contao\Frontend
 
         if ($objPage->type === 'error_404'
             || $objPage->type === 'error_403'
-            || !($alias = Input::getAutoItem('product', false, true))
+            || !($alias = Input::get('auto_item', false, true))
             || ($objProduct = Product::findAvailableByIdOrAlias($alias)) === null
         ) {
             return $arrItems;

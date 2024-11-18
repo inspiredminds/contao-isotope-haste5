@@ -11,7 +11,7 @@
 
 namespace Isotope\EventListener;
 
-use Haste\Input\Input;
+use Contao\Input;
 use Isotope\Model\Product;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
@@ -50,7 +50,7 @@ class ChangeLanguageListener
             return null;
         }
 
-        $step = (string) Input::getAutoItem('step', false, true);
+        $step = (string) Input::get('auto_item', false, true);
 
         return ('' !== $step && \array_key_exists($step, $GLOBALS['ISO_CHECKOUT_STEPS'])) ? $step : null;
     }
@@ -60,7 +60,7 @@ class ChangeLanguageListener
      */
     private function getProductAlias()
     {
-        $alias = (string) Input::getAutoItem('product', false, true);
+        $alias = (string) Input::get('auto_item', false, true);
 
         return '' !== $alias && null !== Product::findAvailableByIdOrAlias($alias) ? $alias : null;
     }
