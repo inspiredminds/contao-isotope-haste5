@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Controller;
@@ -21,7 +22,6 @@ use Contao\Image;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Format;
 use Isotope\Backend\Permission;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
@@ -257,6 +257,9 @@ class Callback extends Permission
 
         $error = [];
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         foreach ($singularFields as $singular) {
             foreach ($productFields as $product) {
                 if ($product['name'] === $singular) {
@@ -264,7 +267,7 @@ class Callback extends Permission
                         foreach ($variantFields as $variant) {
                             if ($variant['name'] === $singular) {
                                 if ($variant['enabled']) {
-                                    $error[] = Format::dcaLabel('tl_iso_product', $singular);
+                                    $error[] = $formatter->dcaLabel('tl_iso_product', $singular);
                                 }
 
                                 break;

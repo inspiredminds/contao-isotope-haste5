@@ -11,13 +11,13 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ReorderAction;
 use Isotope\Model\ProductCollection\Order;
@@ -69,10 +69,13 @@ class OrderDetails extends AbstractProductCollection
 
         parent::compile();
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         $this->Template->info                 = StringUtil::deserialize($order->checkout_info, true);
-        $this->Template->date                 = Format::date($order->locked);
-        $this->Template->time                 = Format::time($order->locked);
-        $this->Template->datim                = Format::datim($order->locked);
+        $this->Template->date                 = $formatter->date($order->locked);
+        $this->Template->time                 = $formatter->time($order->locked);
+        $this->Template->datim                = $formatter->datim($order->locked);
         $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $order->getDocumentNumber(), $this->Template->datim);
         $this->Template->orderStatus          = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $order->getStatusLabel());
         $this->Template->orderStatusKey       = $order->getStatusAlias();

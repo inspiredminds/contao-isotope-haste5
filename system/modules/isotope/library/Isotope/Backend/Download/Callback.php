@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Download;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Controller;
@@ -22,7 +23,6 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Versions;
-use Haste\Util\Format;
 use Isotope\Model\Attribute;
 use Isotope\Model\Download;
 use Isotope\Model\Product;
@@ -108,11 +108,14 @@ class Callback extends Backend
             );
         }
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         foreach ($arrAttributes as $field) {
             $v = $objProduct->$field;
 
             if ($v != '') {
-                $arrNew[Format::dcaLabel($t, $field)] = Format::dcaValue($t, $field, $v);
+                $arrNew[$formatter->dcaLabel($t, $field)] = $formatter->dcaValue($t, $field, $v);
             }
         }
 

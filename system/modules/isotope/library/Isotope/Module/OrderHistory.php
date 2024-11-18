@@ -11,12 +11,12 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Controller;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\System;
 use Haste\Generator\RowClass;
-use Haste\Util\Format;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
@@ -104,6 +104,9 @@ class OrderHistory extends Module
         $reorder = (int) Input::get('reorder');
         $previousUid = Input::get('uid');
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         foreach ($objOrders as $objOrder) {
             if ($this->iso_cart_jumpTo && $reorder === (int) $objOrder->id) {
                 $this->reorder($objOrder);
@@ -120,9 +123,9 @@ class OrderHistory extends Module
             $arrOrders[] = [
                 'collection' => $objOrder,
                 'raw'        => $objOrder->row(),
-                'date'       => Format::date($objOrder->locked),
-                'time'       => Format::time($objOrder->locked),
-                'datime'     => Format::datim($objOrder->locked),
+                'date'       => $formatter->date($objOrder->locked),
+                'time'       => $formatter->time($objOrder->locked),
+                'datime'     => $formatter->datim($objOrder->locked),
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrder->getTotal()),
                 'status'     => $objOrder->getStatusLabel(),
                 'link'       => $this->jumpTo ? (Url::addQueryString('uid=' . $objOrder->uniqid, $this->jumpTo)) : '',

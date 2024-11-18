@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Controller;
 use Contao\Database;
 use Contao\Database\Result;
@@ -22,7 +23,6 @@ use Haste\Generator\RowClass;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
-use Haste\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeAttribute;
@@ -1539,7 +1539,10 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name] ?? null;
 
             if (!$attribute instanceof IsotopeAttribute) {
-                return Format::dcaLabel('tl_iso_product', $name);
+                /** @var Formatter $formatter */
+                $formatter = System::getContainer()->get(Formatter::class);
+
+                return $formatter->dcaLabel('tl_iso_product', $name);
             }
 
             return $attribute->getLabel($options);
@@ -1550,7 +1553,10 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name] ?? null;
 
             if (!$attribute instanceof IsotopeAttribute) {
-                return Format::dcaValue('tl_iso_product', $name, $value);
+                /** @var Formatter $formatter */
+                $formatter = System::getContainer()->get(Formatter::class);
+
+                return $formatter->dcaValue('tl_iso_product', $name, $value);
             }
 
             return $attribute->generateValue($value, $options);

@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Product;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Controller;
@@ -20,7 +21,7 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Session;
 use Contao\StringUtil;
-use Haste\Util\Format;
+use Contao\System;
 use Isotope\Backend\Group\Breadcrumb;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -320,6 +321,9 @@ class DcaManager extends Backend
                 $arrEnabled = $objType->getAttributes();
             }
 
+            /** @var Formatter $formatter */
+            $formatter = System::getContainer()->get(Formatter::class);
+
             // Go through each enabled field and build palette
             foreach ($arrFields as $name => $arrField) {
                 if (\in_array($name, $arrEnabled)) {
@@ -363,7 +367,7 @@ class DcaManager extends Backend
                         && */!$arrAttributes[$name]->isVariantOption()
                         && !\in_array($name, ['price', 'published', 'start', 'stop'], true)
                     ) {
-                        $arrInherit[$name] = Format::dcaLabel('tl_iso_product', $name);
+                        $arrInherit[$name] = $formatter->dcaLabel('tl_iso_product', $name);
                     }
 
                 } else {

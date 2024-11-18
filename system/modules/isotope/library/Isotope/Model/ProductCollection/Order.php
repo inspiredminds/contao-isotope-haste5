@@ -11,13 +11,13 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Controller;
 use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
 use Haste\Generator\RowClass;
-use Haste\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
@@ -449,10 +449,13 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $arrTokens['collection_' . $k] = $v;
         }
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         // Add billing/customer address fields
         if (($objAddress = $this->getBillingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['billing_address_' . $k] = Format::dcaValue(Address::getTable(), $k, $v);
+                $arrTokens['billing_address_' . $k] = $formatter->dcaValue(Address::getTable(), $k, $v);
 
                 // @deprecated (use ##billing_address_*##)
                 $arrTokens['billing_' . $k] = $arrTokens['billing_address_' . $k];
@@ -467,7 +470,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add shipping address fields
         if (($objAddress = $this->getShippingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['shipping_address_' . $k] = Format::dcaValue(Address::getTable(), $k, $v);
+                $arrTokens['shipping_address_' . $k] = $formatter->dcaValue(Address::getTable(), $k, $v);
 
                 // @deprecated (use ##billing_address_*##)
                 $arrTokens['shipping_' . $k] = $arrTokens['shipping_address_' . $k];
@@ -509,14 +512,14 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add config fields
         if ($this->getRelated('config_id') !== null) {
             foreach ($this->getRelated('config_id')->row() as $k => $v) {
-                $arrTokens['config_' . $k] = Format::dcaValue($this->getRelated('config_id')->getTable(), $k, $v);
+                $arrTokens['config_' . $k] = $formatter->dcaValue($this->getRelated('config_id')->getTable(), $k, $v);
             }
         }
 
         // Add member fields
         if ($this->member > 0 && $this->getRelated('member') !== null) {
             foreach ($this->getRelated('member')->row() as $k => $v) {
-                $arrTokens['member_' . $k] = Format::dcaValue($this->getRelated('member')->getTable(), $k, $v);
+                $arrTokens['member_' . $k] = $formatter->dcaValue($this->getRelated('member')->getTable(), $k, $v);
             }
         }
 

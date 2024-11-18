@@ -11,12 +11,13 @@
 
 namespace Isotope\Backend\Product;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Environment;
 use Contao\Image;
 use Contao\StringUtil;
-use Haste\Util\Format;
+use Contao\System;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
@@ -230,11 +231,14 @@ class Label
     {
         $attributes = [];
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $variantField) {
             $attributes[] = sprintf(
                 '<strong>%s:</strong>&nbsp;%s',
-                Format::dcaLabel($dc->table, $variantField),
-                Format::dcaValue($dc->table, $variantField, $objProduct->$variantField)
+                $formatter->dcaLabel($dc->table, $variantField),
+                $formatter->dcaValue($dc->table, $variantField, $objProduct->$variantField)
             );
         }
 

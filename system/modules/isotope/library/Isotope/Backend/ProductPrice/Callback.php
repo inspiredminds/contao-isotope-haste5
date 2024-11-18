@@ -11,11 +11,12 @@
 
 namespace Isotope\Backend\ProductPrice;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Backend;
 use Contao\Database;
 use Contao\Database\Result;
 use Contao\StringUtil;
-use Haste\Util\Format;
+use Contao\System;
 
 
 class Callback extends Backend
@@ -54,6 +55,9 @@ class Callback extends Backend
 
         $arrInfo = array('<tr><td><span class="tl_label">' . $GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][0] . ':</span></td><td>' . implode(', ', $arrTiers) . '</td></tr>');
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         foreach ($row as $name => $value) {
             switch ($name) {
                 case 'id':
@@ -63,7 +67,7 @@ class Callback extends Backend
 
                 default:
                     if ($value != '' && $value > 0) {
-                        $arrInfo[] = '<tr><td><span class="tl_label">' . Format::dcaLabel('tl_iso_product_price', $name) . ':</span></td><td>' . Format::dcaValue('tl_iso_product_price', $name, $value) . '</td></tr>';
+                        $arrInfo[] = '<tr><td><span class="tl_label">' . $formatter->dcaLabel('tl_iso_product_price', $name) . ':</span></td><td>' . $formatter->dcaValue('tl_iso_product_price', $name, $value) . '</td></tr>';
                     }
                     break;
             }
@@ -84,16 +88,19 @@ class Callback extends Backend
      */
     public function generateWizardList($rows, $strId, $objWidget)
     {
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         $strReturn = '
 <table class="tl_listing showColumns">
 <thead>
     <tr>
-        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'price_tiers') . '</td>
-        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'tax_class') . '</td>
-        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'config_id') . '</td>
-        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'member_group') . '</td>
-        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'start') . '</td>
-        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'stop') . '</td>
+        <td class="tl_folder_tlist">' . $formatter->dcaLabel('tl_iso_product_price', 'price_tiers') . '</td>
+        <td class="tl_folder_tlist">' . $formatter->dcaLabel('tl_iso_product_price', 'tax_class') . '</td>
+        <td class="tl_folder_tlist">' . $formatter->dcaLabel('tl_iso_product_price', 'config_id') . '</td>
+        <td class="tl_folder_tlist">' . $formatter->dcaLabel('tl_iso_product_price', 'member_group') . '</td>
+        <td class="tl_folder_tlist">' . $formatter->dcaLabel('tl_iso_product_price', 'start') . '</td>
+        <td class="tl_folder_tlist">' . $formatter->dcaLabel('tl_iso_product_price', 'stop') . '</td>
         <td class="tl_folder_tlist">&nbsp;</td>
     </tr>
 </thead>
@@ -118,11 +125,11 @@ class Callback extends Backend
             $strReturn .= '
 <tr>
     <td class="tl_file_list">' . implode(', ', $arrTiers) . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'tax_class', $row['tax_class']) ? : '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'config_id', $row['config_id']) ? : '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $row['member_group']) ? : '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $row['start']) ? : '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $row['stop']) ? : '-') . '</td>
+    <td class="tl_file_list">' . ($formatter->dcaValue('tl_iso_product_price', 'tax_class', $row['tax_class']) ? : '-') . '</td>
+    <td class="tl_file_list">' . ($formatter->dcaValue('tl_iso_product_price', 'config_id', $row['config_id']) ? : '-') . '</td>
+    <td class="tl_file_list">' . ($formatter->dcaValue('tl_iso_product_price', 'member_group', $row['member_group']) ? : '-') . '</td>
+    <td class="tl_file_list">' . ($formatter->dcaValue('tl_iso_product_price', 'member_group', $row['start']) ? : '-') . '</td>
+    <td class="tl_file_list">' . ($formatter->dcaValue('tl_iso_product_price', 'member_group', $row['stop']) ? : '-') . '</td>
     <td class="tl_file_list tl_right_nowrap">';
 
             foreach ($operations as $operation) {

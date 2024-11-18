@@ -11,12 +11,13 @@
 
 namespace Isotope\Model;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Controller;
 use Contao\Database;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\StringUtil;
-use Haste\Util\Format;
+use Contao\System;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
@@ -392,7 +393,10 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      */
     public function getLabel()
     {
-        return Format::dcaLabel('tl_iso_product', $this->field_name);
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
+        return $formatter->dcaLabel('tl_iso_product', $this->field_name);
     }
 
     /**
@@ -440,7 +444,10 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      */
     public function generateValue($value, array $options = [])
     {
-        return Format::dcaValue('tl_iso_product', $this->field_name, $value);
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
+        return $formatter->dcaValue('tl_iso_product', $this->field_name, $value);
     }
 
     /**

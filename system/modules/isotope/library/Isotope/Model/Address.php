@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Controller;
 use Contao\MemberModel;
 use Contao\Model;
@@ -18,7 +19,6 @@ use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Database\Result;
-use Haste\Util\Format;
 use Isotope\Backend;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeVatNoValidator;
@@ -192,6 +192,9 @@ class Address extends Model
 
         $arrTokens = array('outputFormat' => 'html');
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         foreach ($arrFields as $arrField) {
             $strField = $arrField['value'];
 
@@ -210,7 +213,7 @@ class Address extends Model
                 continue;
             }
 
-            $arrTokens[$strField] = Format::dcaValue(static::$strTable, $strField, $this->$strField);
+            $arrTokens[$strField] = $formatter->dcaValue(static::$strTable, $strField, $this->$strField);
         }
 
 

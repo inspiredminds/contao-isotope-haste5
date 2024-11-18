@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\ProductCollection;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
@@ -28,7 +29,6 @@ use Contao\ModuleModel;
 use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeBackendInterface;
@@ -140,6 +140,9 @@ class Callback extends Backend
 
         $arrRelations = DcaExtractor::getInstance('tl_iso_product_collection')->getRelations();
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         $strBuffer = '
 <div>
 <table class="tl_show">
@@ -219,8 +222,8 @@ class Callback extends Backend
 
             $strBuffer .= '
   <tr>
-    <td class="tl_label">' . Format::dcaLabel($dc->table, $field) . ' <small>'.$field.'</small></td>
-    <td>' . Format::dcaValue($dc->table, $field, $objOrder->{$field}, $dc) . '</td>
+    <td class="tl_label">' . $formatter->dcaLabel($dc->table, $field) . ' <small>'.$field.'</small></td>
+    <td>' . $formatter->dcaValue($dc->table, $field, $objOrder->{$field}, $dc) . '</td>
     <td>' . implode(' ', $operations) . '</td>
   </tr>';
         }
@@ -322,6 +325,9 @@ class Callback extends Backend
         System::loadLanguageFile(Address::getTable());
         Controller::loadDataContainer(Address::getTable());
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         $strBuffer = '
 <div>
 <table class="tl_show">
@@ -334,8 +340,8 @@ class Callback extends Backend
 
             $strBuffer .= '
   <tr>
-    <td class="tl_label">' . Format::dcaLabel(Address::getTable(), $field) . ' <small>'.$field.'</small></td>
-    <td>' . Format::dcaValue(Address::getTable(), $field, $objAddress->{$field}) . '</td>
+    <td class="tl_label">' . $formatter->dcaLabel(Address::getTable(), $field) . ' <small>'.$field.'</small></td>
+    <td>' . $formatter->dcaValue(Address::getTable(), $field, $objAddress->{$field}) . '</td>
   </tr>';
         }
 
@@ -699,20 +705,23 @@ class Callback extends Backend
         if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp'])) !== null) {
             $previousLogModel = null;
 
+            /** @var Formatter $formatter */
+            $formatter = System::getContainer()->get(Formatter::class);
+
             /** @var ProductCollectionLog $logModel */
             foreach ($logModels as $logModel) {
                 $log = [
                     'tstamp' => [
-                        'label' => Format::dcaLabel($logTable, 'tstamp'),
-                        'value' => $logModel->tstamp ? Format::dcaValue($logTable, 'tstamp', $logModel->tstamp) : '–'
+                        'label' => $formatter->dcaLabel($logTable, 'tstamp'),
+                        'value' => $logModel->tstamp ? $formatter->dcaValue($logTable, 'tstamp', $logModel->tstamp) : '–'
                     ],
                 ];
 
                 // Add author only if it has a value (order can be updated automatically in frontend)
                 if ($logModel->author) {
                     $log['author'] = [
-                        'label' => Format::dcaLabel($logTable, 'author'),
-                        'value' => $logModel->author ? Format::dcaValue($logTable, 'author', $logModel->author) : '–'
+                        'label' => $formatter->dcaLabel($logTable, 'author'),
+                        'value' => $logModel->author ? $formatter->dcaValue($logTable, 'author', $logModel->author) : '–'
                     ];
                 }
 
@@ -756,8 +765,8 @@ class Callback extends Backend
                     }
 
                     $log[$field] = [
-                        'label' => Format::dcaLabel($dc->table, $field),
-                        'value' => $value ? Format::dcaValue($dc->table, $field, $value) : '–'
+                        'label' => $formatter->dcaLabel($dc->table, $field),
+                        'value' => $value ? $formatter->dcaValue($dc->table, $field, $value) : '–'
                     ];
 
                     // Support line breaks for textareas

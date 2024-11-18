@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -20,7 +21,6 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Haste\Util\Format;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -420,18 +420,21 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     $objSorting = Isotope::getRequestCache()->getSortingForModule($first, $this->id);
                 }
 
+                /** @var Formatter $formatter */
+                $formatter = System::getContainer()->get(Formatter::class);
+
                 foreach ($this->iso_sortingFields as $field) {
                     [$asc, $desc] = $this->getSortingLabels($field);
                     $isDefault = $first === $field && null !== $objSorting;
 
                     $arrOptions[] = [
-                        'label'   => Format::dcaLabel('tl_iso_product', $field) . ', ' . $asc,
+                        'label'   => $formatter->dcaLabel('tl_iso_product', $field) . ', ' . $asc,
                         'value'   => $field . ':ASC',
                         'default' => ($isDefault && $objSorting->isAscending()) ? '1' : '',
                     ];
 
                     $arrOptions[] = [
-                        'label'   => Format::dcaLabel('tl_iso_product', $field) . ', ' . $desc,
+                        'label'   => $formatter->dcaLabel('tl_iso_product', $field) . ', ' . $desc,
                         'value'   => $field . ':DESC',
                         'default' => ($isDefault && $objSorting->isDescending()) ? '1' : '',
                     ];

@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Codefog\HasteBundle\Formatter;
 use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Environment;
@@ -18,7 +19,6 @@ use Contao\Input;
 use Contao\System;
 use Contao\Widget;
 use Haste\Data\Plain;
-use Haste\Util\Format;
 use Isotope\Frontend\ProductAction\CartAction;
 use Isotope\Frontend\ProductAction\FavoriteAction;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
@@ -476,6 +476,9 @@ class Isotope extends Controller
     public static function formatOptions(array $arrData, $strTable = 'tl_iso_product', $blnSkipEmpty = true)
     {
         $arrOptions = array();
+        
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
 
         foreach ($arrData as $field => $value) {
             if ($blnSkipEmpty && ($value == '' || $value == '-')) {
@@ -484,8 +487,8 @@ class Isotope extends Controller
 
             $arrOptions[$field] = array
             (
-                'label' => Format::dcaLabel($strTable, $field),
-                'value' => Controller::replaceInsertTags(Format::dcaValue($strTable, $field, $value)),
+                'label' => $formatter->dcaLabel($strTable, $field),
+                'value' => Controller::replaceInsertTags($formatter->dcaValue($strTable, $field, $value)),
             );
         }
 
@@ -505,6 +508,9 @@ class Isotope extends Controller
         Product::setActive($objProduct);
 
         $strTable = Product::getTable();
+
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
 
         foreach ($arrConfig as $k => $v) {
 
@@ -556,12 +562,12 @@ class Isotope extends Controller
                 $formatted = implode(', ', $arrOptions);
 
             } else {
-                $formatted = Format::dcaValue($strTable, $k, $v);
+                $formatted = $formatter->dcaValue($strTable, $k, $v);
             }
 
             $arrConfig[$k] = new Plain(
                 $v,
-                Format::dcaLabel($strTable, $k),
+                $formatter->dcaLabel($strTable, $k),
                 array (
                     'formatted' => Controller::replaceInsertTags($formatted),
                 )

@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Rule;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\Backend;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
@@ -20,7 +21,6 @@ use Contao\Image;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Format;
 
 
 class Callback extends Backend
@@ -169,9 +169,12 @@ class Callback extends Backend
     {
         $arrAttributes = array();
 
+        /** @var Formatter $formatter */
+        $formatter = System::getContainer()->get(Formatter::class);
+
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $attribute => $config) {
             if (!empty($config['attributes']['legend']) && $attribute !== 'pages' && ($config['inputType'] ?? null) !== 'mediaManager') {
-                $arrAttributes[$attribute] = Format::dcaLabel('tl_iso_product', $attribute);
+                $arrAttributes[$attribute] = $formatter->dcaLabel('tl_iso_product', $attribute);
             }
         }
 
