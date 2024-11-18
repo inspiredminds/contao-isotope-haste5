@@ -1,6 +1,6 @@
 {
-    "name":"inspiredminds/isotope-haste5",
-    "description":"Haste 5 compatible fork of Contao Isotope eCommerce ",
+    "name":"isotope/isotope-core",
+    "description":"Isotope is the premier open source eCommerce solution for Contao Open Source CMS",
     "homepage": "https://isotopeecommerce.org",
     "keywords":["contao", "isotope"],
     "type":"contao-module",
@@ -109,8 +109,5 @@
                 "system/modules/isotope/config/upgrade.php"
             ]
         }
-    },
-    "replace": {
-        "isotope/isotope-core": "*"
     }
 }
