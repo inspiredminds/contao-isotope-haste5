@@ -11,11 +11,12 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Date;
 use Contao\PageModel;
-use Isotope\Helper\Generator\RowClass;
-use Haste\Util\Url;
+use Contao\System;
 use Isotope\CompatibilityHelper;
+use Isotope\Helper\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Wishlist;
 use Isotope\Template;
@@ -97,6 +98,9 @@ class WishlistViewer extends Module
 
         $url = $this->getJumpTo()->getFrontendUrl();
 
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
         foreach ($wishlists as $wishlist) {
             Isotope::setConfig($wishlist->getConfig());
 
@@ -106,7 +110,7 @@ class WishlistViewer extends Module
                 'name'       => $wishlist->getName(),
                 'published'  => Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $wishlist->date_shipped),
                 'member'     => $wishlist->getRelated('member'),
-                'href'       => Url::addQueryString('uid=' . $wishlist->uniqid, $url),
+                'href'       => $urlParser->addQueryString('uid=' . $wishlist->uniqid, $url),
                 'model'      => $wishlist,
             ];
         }

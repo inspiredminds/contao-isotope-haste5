@@ -11,10 +11,12 @@
 
 namespace Isotope\Frontend\ProductAction;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
-use Haste\Util\Url;
+use Contao\PageModel;
+use Contao\System;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -65,10 +67,13 @@ class CartAction extends AbstractButton
                 Controller::reload();
             }
 
+            /** @var UrlParser $urlParser */
+            $urlParser = System::getContainer()->get(UrlParser::class);
+
             Controller::redirect(
-                Url::addQueryString(
+                $urlParser->addQueryString(
                     'continue=' . base64_encode(Environment::get('request')),
-                    $config['module']->iso_addProductJumpTo
+                    PageModel::findById($config['module']->iso_addProductJumpTo)?->getAbsoluteUrl()
                 )
             );
         }

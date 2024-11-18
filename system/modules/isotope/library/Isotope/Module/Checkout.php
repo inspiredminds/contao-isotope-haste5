@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -20,7 +21,6 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Helper\Generator\RowClass;
-use Haste\Util\Url;
 use Isotope\CheckoutStep\OrderConditions;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeCheckoutStep;
@@ -743,7 +743,10 @@ class Checkout extends Module
         $strUrl = $absolute ? $objTarget->getAbsoluteUrl('/' . $strStep) : $objTarget->getFrontendUrl('/' . $strStep);
 
         if (null !== $objCollection) {
-            $strUrl = Url::addQueryString('uid=' . $objCollection->getUniqueId(), $strUrl);
+            /** @var UrlParser $urlParser */
+            $urlParser = System::getContainer()->get(UrlParser::class);
+
+            $strUrl = $urlParser->addQueryString('uid=' . $objCollection->getUniqueId(), $strUrl);
         }
 
         return $strUrl;

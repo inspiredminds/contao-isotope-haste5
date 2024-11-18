@@ -11,11 +11,11 @@
 
 namespace Isotope\Model\Payment;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
-use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -286,7 +286,10 @@ class Swissbilling extends Payment
         $returnUrl = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $collection, null, true);
 
         if ($timestamp) {
-            $returnUrl = Url::addQueryString('timestamp='.$timestamp, $returnUrl);
+            /** @var UrlParser $urlParser */
+            $urlParser = System::getContainer()->get(UrlParser::class);
+
+            $returnUrl = $urlParser->addQueryString('timestamp='.$timestamp, $returnUrl);
         }
 
         $merchant = new Merchant(

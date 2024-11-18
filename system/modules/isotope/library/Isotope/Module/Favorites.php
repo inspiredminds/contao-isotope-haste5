@@ -11,9 +11,10 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Input;
-use Haste\Util\Url;
+use Contao\System;
 use Isotope\Frontend\ProductCollectionAction\AddToCartAction;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -86,7 +87,10 @@ class Favorites extends AbstractProductCollection
     ) {
         $data = parent::updateItemTemplate($collection, $item, $data, $quantity, $hasChanges);
 
-        $data['cart_href'] = Url::addQueryString('add_to_cart=' . $item->id);
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
+        $data['cart_href'] = $urlParser->addQueryString('add_to_cart=' . $item->id);
 
         // Add single item to cart
         if (Input::get('add_to_cart') == $item->id && $item->hasProduct()) {
@@ -101,7 +105,7 @@ class Favorites extends AbstractProductCollection
                 $hasChanges = true;
             }
 
-            Controller::redirect(Url::removeQueryString(['add_to_cart']));
+            Controller::redirect($urlParser->removeQueryString(['add_to_cart']));
         }
 
         // Add all items to cart based on quantity field and global button

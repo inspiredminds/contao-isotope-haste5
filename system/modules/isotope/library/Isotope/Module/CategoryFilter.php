@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Database;
 use Contao\Environment;
@@ -19,7 +20,7 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
-use Haste\Util\Url;
+use Contao\System;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
@@ -131,16 +132,19 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
         $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
         // Include Environment::base or the URL would not work on the index page
         Controller::redirect(
             Environment::get('base') .
-            Url::addQueryString(
+            $urlParser->addQueryString(
                 'isorc='.$objCache->id,
-                Url::removeQueryStringCallback(
+                $urlParser->removeQueryStringCallback(
                     static function ($value, $key) {
                         return 'categoryfilter' !== $key && !str_starts_with($key, 'page_iso');
                     },
-                    ($this->jumpTo ?: null)
+                    PageModel::findById($this->jumpTo)?->getAbsoluteUrl()
                 )
             )
         );
@@ -204,9 +208,13 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
             }
 
             $value = base64_encode($this->id . ';' . ($row['isActive'] ? 'del' : 'add') . ';' . $subpage->id);
-            $href  = Url::addQueryString(
+
+            /** @var UrlParser $urlParser */
+            $urlParser = System::getContainer()->get(UrlParser::class);
+
+            $href  = $urlParser->addQueryString(
                 'categoryfilter=' . $value,
-                Url::removeQueryStringCallback(function ($value, $key) {
+                $urlParser->removeQueryStringCallback(function ($value, $key) {
                     return strpos($key, 'page_iso') !== 0;
                 })
             );

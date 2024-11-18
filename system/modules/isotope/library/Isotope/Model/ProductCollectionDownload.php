@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Database;
 use Contao\File;
@@ -21,7 +22,6 @@ use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
@@ -143,7 +143,10 @@ class ProductCollectionDownload extends Model
 
             $strHref = '';
             if ($baseUrl) {
-                $strHref = Url::addQueryString(
+                /** @var UrlParser $urlParser */
+                $urlParser = System::getContainer()->get(UrlParser::class);
+
+                $strHref = $urlParser->addQueryString(
                     'download=' . $objDownload->id . '&amp;file=' . $uuid,
                     $baseUrl
                 );

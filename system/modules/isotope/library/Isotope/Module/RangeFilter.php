@@ -11,11 +11,12 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
+use Contao\PageModel;
 use Contao\System;
-use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
@@ -148,15 +149,18 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
             $new = $cache->saveNewConfiguration();
 
             if ($new->id !== $cache->id) {
+                /** @var UrlParser $urlParser */
+                $urlParser = System::getContainer()->get(UrlParser::class);
+
                 Controller::redirect(
                     Environment::get('base') .
-                    Url::addQueryString(
+                    $urlParser->addQueryString(
                         'isorc='.$new->id,
-                        Url::removeQueryStringCallback(
+                        $urlParser->removeQueryStringCallback(
                             static function ($value, $key) {
                                 return !str_starts_with($key, 'page_iso');
                             },
-                            ($this->jumpTo ?: null)
+                            PageModel::findById($this->jumpTo)?->getAbsoluteUrl()
                         )
                     )
                 );

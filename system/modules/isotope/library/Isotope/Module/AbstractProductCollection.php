@@ -11,10 +11,11 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Input;
 use Contao\StringUtil;
-use Haste\Util\Url;
+use Contao\System;
 use Isotope\Frontend\ProductCollectionAction\LegacyButtonAction;
 use Isotope\Frontend\ProductCollectionAction\ProductCollectionActionInterface;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -218,12 +219,15 @@ abstract class AbstractProductCollection extends Module
         }
 
         if ($this->canRemoveProducts()) {
+            /** @var UrlParser $urlParser */
+            $urlParser = System::getContainer()->get(UrlParser::class);
+
             if ((int) Input::get('remove') === (int) $item->id) {
                 $collection->deleteItemById($item->id);
-                Controller::redirect(Url::removeQueryString(['remove']));
+                Controller::redirect($urlParser->removeQueryString(['remove']));
             }
 
-            $data['remove_href']  = Url::addQueryString('remove=' . $item->id);
+            $data['remove_href']  = $urlParser->addQueryString('remove=' . $item->id);
             $data['remove_title'] = StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $data['name']));
             $data['remove_link']  = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
         }

@@ -11,10 +11,10 @@
 
 namespace Isotope\Model\Payment;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
-use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
@@ -56,6 +56,9 @@ class PaypalCheckout extends PaypalApi
 
             $this->patchPayment($objOrder, $paypalData['id']);
 
+            /** @var UrlParser $urlParser */
+            $urlParser = System::getContainer()->get(UrlParser::class);
+
             foreach ($paypalData['links'] as $link) {
                 if ('approval_url' === $link['rel']) {
                     $template = new Template('iso_payment_paypal_checkout');
@@ -68,8 +71,8 @@ class PaypalCheckout extends PaypalApi
                     $template->token = $params['token'];
 
                     $successUrl = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
-                    $successUrl = Url::addQueryString('paymentID=__paymentID__', $successUrl);
-                    $successUrl = Url::addQueryString('payerID=__payerID__', $successUrl);
+                    $successUrl = $urlParser->addQueryString('paymentID=__paymentID__', $successUrl);
+                    $successUrl = $urlParser->addQueryString('payerID=__payerID__', $successUrl);
                     $template->success_url = $successUrl;
 
                     $template->cancel_url = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);

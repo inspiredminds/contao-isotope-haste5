@@ -11,9 +11,9 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Url;
 use Isotope\Frontend\ProductCollectionAction\ContinueShoppingAction;
 use Isotope\Frontend\ProductCollectionAction\GoToCartAction;
 use Isotope\Frontend\ProductCollectionAction\GoToCheckoutAction;
@@ -111,7 +111,11 @@ class Cart extends AbstractProductCollection
 
         if (isset($data['configuration']) && !$item->hasErrors()) {
             [$baseUrl,] = explode('?', $data['href'], 2);
-            $data['edit_href']  = Url::addQueryString('collection_item=' . $item->id, $baseUrl);
+
+            /** @var UrlParser $urlParser */
+            $urlParser = System::getContainer()->get(UrlParser::class);
+
+            $data['edit_href']  = $urlParser->addQueryString('collection_item=' . $item->id, $baseUrl);
             $data['edit_title'] = StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['editProductLinkTitle'], $data['name']));
             $data['edit_link']  = $GLOBALS['TL_LANG']['MSC']['editProductLinkText'];
         }

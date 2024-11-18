@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Product;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\ContentElement;
 use Contao\Database;
 use Contao\Date;
@@ -24,7 +25,6 @@ use Hashids\Hashids;
 use Isotope\Helper\Generator\RowClass;
 use Isotope\Helper\Units\Mass\Weight;
 use Isotope\Helper\Units\Mass\WeightAggregate;
-use Haste\Util\Url;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\Registry;
@@ -1109,7 +1109,10 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         $url = $absolute ? $objJumpTo->getAbsoluteUrl($strParams) : $objJumpTo->getFrontendUrl($strParams);
 
-        return Url::addQueryString(http_build_query($this->getOptions()), $url);
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
+        return $urlParser->addQueryString(http_build_query($this->getOptions()), $url);
     }
 
     /**

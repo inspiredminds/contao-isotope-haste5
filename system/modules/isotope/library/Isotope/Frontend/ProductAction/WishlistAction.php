@@ -11,11 +11,13 @@
 
 namespace Isotope\Frontend\ProductAction;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\FormSelectMenu;
 use Contao\Input;
-use Haste\Util\Url;
+use Contao\PageModel;
+use Contao\System;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Message;
 use Isotope\Model\ProductCollection\Wishlist;
@@ -97,10 +99,13 @@ class WishlistAction extends AbstractButton
             Controller::reload();
         }
 
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
         Controller::redirect(
-            Url::addQueryString(
+            $urlParser->addQueryString(
                 'id=' . $wishlist->id . '&amp;continue=' . base64_encode(Environment::get('request')),
-                $config['module']->iso_wishlistJumpTo
+                PageModel::findById($config['module']->iso_wishlistJumpTo)?->getAbsoluteUrl()
             )
         );
 

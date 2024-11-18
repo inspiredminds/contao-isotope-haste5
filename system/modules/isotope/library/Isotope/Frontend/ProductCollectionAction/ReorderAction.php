@@ -11,10 +11,11 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Module;
 use Contao\System;
-use Haste\Util\Url;
+use Contao\PageModel;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -64,10 +65,13 @@ class ReorderAction extends AbstractButton
 
         Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['reorderConfirmation']);
 
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
         Controller::redirect(
-            Url::addQueryString(
+            $urlParser->addQueryString(
                 'continue=' . base64_encode(System::getReferer()),
-                $this->module->iso_cart_jumpTo
+                PageModel::findById($this->module->iso_cart_jumpTo)?->getAbsoluteUrl()
             )
         );
     }

@@ -17,7 +17,8 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\System;
 use Isotope\Helper\Generator\RowClass;
-use Haste\Util\Url;
+use Codefog\HasteBundle\UrlParser;
+use Contao\PageModel;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -107,6 +108,9 @@ class OrderHistory extends Module
         /** @var Formatter $formatter */
         $formatter = System::getContainer()->get(Formatter::class);
 
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
         foreach ($objOrders as $objOrder) {
             if ($this->iso_cart_jumpTo && $reorder === (int) $objOrder->id) {
                 $this->reorder($objOrder);
@@ -128,9 +132,9 @@ class OrderHistory extends Module
                 'datime'     => $formatter->datim($objOrder->locked),
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrder->getTotal()),
                 'status'     => $objOrder->getStatusLabel(),
-                'link'       => $this->jumpTo ? (Url::addQueryString('uid=' . $objOrder->uniqid, $this->jumpTo)) : '',
+                'link'       => $this->jumpTo ? ($urlParser->addQueryString('uid=' . $objOrder->uniqid, PageModel::findById($this->jumpTo)?->getFrontendUrl())) : '',
                 'details'    => $details,
-                'reorder'    => $this->iso_cart_jumpTo ? (Url::addQueryString('reorder=' . $objOrder->id)) : '',
+                'reorder'    => $this->iso_cart_jumpTo ? ($urlParser->addQueryString('reorder=' . $objOrder->id)) : '',
                 'class'      => $objOrder->getStatusAlias(),
             ];
         }
@@ -148,10 +152,13 @@ class OrderHistory extends Module
 
         Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['reorderConfirmation']);
 
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
         Controller::redirect(
-            Url::addQueryString(
+            $urlParser->addQueryString(
                 'continue=' . base64_encode(System::getReferer()),
-                $this->iso_cart_jumpTo
+                PageModel::findById($this->iso_cart_jumpTo)?->getAbsoluteUrl()
             )
         );
     }

@@ -11,14 +11,16 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
+use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use Contao\Widget;
-use Isotope\Helper\Generator\RowClass;
-use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
+use Isotope\Helper\Generator\RowClass;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
@@ -287,9 +289,12 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $link  = $label;
         $class = $option['cssClass'] ?? '';
 
-        $href  = Url::addQueryString(
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
+        $href  = $urlParser->addQueryString(
             'cumulativefilter=' . $value,
-            Url::removeQueryStringCallback(function ($value, $key) {
+            $urlParser->removeQueryStringCallback(function ($value, $key) {
                 return strpos($key, 'page_iso') !== 0;
             })
         );
@@ -476,17 +481,20 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         }
 
         $objCache = Isotope::getRequestCache()->saveNewConfiguration();
+        
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
 
         // Include Environment::base or the URL would not work on the index page
         Controller::redirect(
             Environment::get('base') .
-            Url::addQueryString(
+            $urlParser->addQueryString(
                 'isorc='.$objCache->id,
-                Url::removeQueryStringCallback(
+                $urlParser->removeQueryStringCallback(
                     static function ($value, $key) {
                         return 'cumulativefilter' !== $key && !str_starts_with($key, 'page_iso');
                     },
-                    ($this->jumpTo ?: null)
+                    PageModel::findById($this->jumpTo)?->getAbsoluteUrl()
                 )
             )
         );

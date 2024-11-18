@@ -21,7 +21,7 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Haste\Util\Url;
+use Codefog\HasteBundle\UrlParser;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
@@ -88,16 +88,19 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         if ($this->blnUpdateCache) {
             $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
+            /** @var UrlParser $urlParser */
+            $urlParser = System::getContainer()->get(UrlParser::class);
+
             // Include Environment::base or the URL would not work on the index page
             Controller::redirect(
                 Environment::get('base') .
-                Url::addQueryString(
+                $urlParser->addQueryString(
                     'isorc='.$objCache->id,
-                    Url::removeQueryStringCallback(
+                    $urlParser->removeQueryStringCallback(
                         static function ($value, $key) {
                             return !str_starts_with($key, 'page_iso');
                         },
-                        ($this->jumpTo ?: null)
+                        PageModel::findById($this->jumpTo)?->getAbsoluteUrl()
                     )
                 )
             );

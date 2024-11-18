@@ -11,13 +11,14 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
-use Isotope\Helper\Generator\RowClass;
-use Haste\Util\Url;
+use Contao\System;
 use Isotope\CompatibilityHelper;
+use Isotope\Helper\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Wishlist;
 use Isotope\Template;
@@ -129,6 +130,9 @@ class WishlistManager extends Module
 
         $url = $this->getJumpTo()->getFrontendUrl();
 
+        /** @var UrlParser $urlParser */
+        $urlParser = System::getContainer()->get(UrlParser::class);
+
         foreach ($wishlists as $wishlist) {
             Isotope::setConfig($wishlist->getConfig());
 
@@ -137,7 +141,7 @@ class WishlistManager extends Module
                 'id'         => $wishlist->id,
                 'name'       => $wishlist->getName(),
                 'member'     => $wishlist->getRelated('member'),
-                'href'       => Url::addQueryString('id=' . $wishlist->id, $url)
+                'href'       => $urlParser->addQueryString('id=' . $wishlist->id, $url)
             ];
         }
 

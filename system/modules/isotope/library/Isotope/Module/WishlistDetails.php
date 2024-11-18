@@ -11,11 +11,12 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\UrlParser;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
-use Haste\Util\Url;
+use Contao\System;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ShareWishlistAction;
 use Isotope\Model\ProductCollection\Wishlist as WishlistCollection;
@@ -45,7 +46,10 @@ class WishlistDetails extends AbstractProductCollection
             /** @var PageModel $objPage */
             global $objPage;
 
-            $this->Template->share = Url::addQueryString(
+            /** @var UrlParser $urlParser */
+            $urlParser = System::getContainer()->get(UrlParser::class);
+
+            $this->Template->share = $urlParser->addQueryString(
                 'uid='.$this->getCollection()->uniqid,
                 $objPage->getFrontendUrl()
             );
