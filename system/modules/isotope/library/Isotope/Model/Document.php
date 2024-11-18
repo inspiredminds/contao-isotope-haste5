@@ -11,8 +11,9 @@
 
 namespace Isotope\Model;
 
+use Codefog\HasteBundle\StringParser;
 use Contao\StringUtil;
-use Haste\Util\StringUtil as HasteStringUtil;
+use Contao\System;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 /**
@@ -69,12 +70,15 @@ abstract class Document extends TypeAgent
      */
     protected function prepareFileName($strName, $arrTokens = array(), $strPath = '')
     {
+        /** @var StringParser $stringParser */
+        $stringParser = System::getContainer()->get(StringParser::class);
+
         // Replace simple tokens
         $strName = $this->sanitizeFileName(
-            HasteStringUtil::recursiveReplaceTokensAndTags(
+            $stringParser->recursiveReplaceTokensAndTags(
                 $strName,
                 $arrTokens,
-                HasteStringUtil::NO_TAGS | HasteStringUtil::NO_BREAKS | HasteStringUtil::NO_ENTITIES
+                StringParser::NO_TAGS | StringParser::NO_BREAKS | StringParser::NO_ENTITIES
             )
         );
 
@@ -98,6 +102,6 @@ abstract class Document extends TypeAgent
      */
     protected function sanitizeFileName($strName, $blnPreserveUppercase = true)
     {
-        return StringUtil::standardize(\Contao\StringUtil::ampersand($strName, false), $blnPreserveUppercase);
+        return StringUtil::standardize(StringUtil::ampersand($strName, false), $blnPreserveUppercase);
     }
 }

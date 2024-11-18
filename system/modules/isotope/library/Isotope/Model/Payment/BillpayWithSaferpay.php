@@ -12,8 +12,10 @@
 namespace Isotope\Model\Payment;
 
 use Codefog\HasteBundle\Form\Form;
+use Codefog\HasteBundle\StringParser;
+use Contao\StringUtil;
+use Contao\System;
 use Contao\Template;
-use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -80,7 +82,7 @@ class BillpayWithSaferpay extends Saferpay
             && $objCollection->hasPayment()
             && $objCollection->getPaymentMethod() instanceof BillpayWithSaferpay
         ) {
-            $arrPayment = \Contao\StringUtil::deserialize($objCollection->payment_data);
+            $arrPayment = StringUtil::deserialize($objCollection->payment_data);
 
             if (!empty($arrPayment) && \is_array($arrPayment) && \is_array($arrPayment['POSTSALE'])) {
                 $doc = new \DOMDocument();
@@ -143,6 +145,9 @@ class BillpayWithSaferpay extends Saferpay
         $xml = new \DOMDocument();
         $articleData = $xml->createElement('article_data');
 
+        /** @var StringParser $stringParser */
+        $stringParser = System::getContainer()->get(StringParser::class);
+
         foreach ($objCollection->getItems() as $objItem) {
             $article = $xml->createElement('article');
 
@@ -155,9 +160,9 @@ class BillpayWithSaferpay extends Saferpay
             $article->appendChild($quantity);
 
             $name = $xml->createAttribute('articlename');
-            $name->value = StringUtil::convertToText(
+            $name->value = $stringParser->convertToText(
                 $objItem->getName(),
-                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                StringParser::NO_TAGS | StringParser::NO_BREAKS | StringParser::NO_INSERTTAGS | StringParser::NO_ENTITIES
             );
             $article->appendChild($name);
 
@@ -183,9 +188,9 @@ class BillpayWithSaferpay extends Saferpay
                 $article->appendChild($quantity);
 
                 $name = $xml->createAttribute('articlename');
-                $name->value = StringUtil::convertToText(
+                $name->value = $stringParser->convertToText(
                     $objSurcharge->label,
-                    StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                    StringParser::NO_TAGS | StringParser::NO_BREAKS | StringParser::NO_INSERTTAGS | StringParser::NO_ENTITIES
                 );
                 $article->appendChild($name);
 
@@ -233,10 +238,13 @@ class BillpayWithSaferpay extends Saferpay
         $total = $xml->createElement('total');
 
         if ($intShippingPrice != 0 || $intShippingPriceGross != 0) {
+            /** @var StringParser $stringParser */
+            $stringParser = System::getContainer()->get(StringParser::class);
+
             $shippingName = $xml->createAttribute('shippingname');
-            $shippingName->value = StringUtil::convertToText(
+            $shippingName->value = $stringParser->convertToText(
                 $strShippingName,
-                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                StringParser::NO_TAGS | StringParser::NO_BREAKS | StringParser::NO_INSERTTAGS | StringParser::NO_ENTITIES
             );
             $total->appendChild($shippingName);
 

@@ -11,10 +11,11 @@
 
 namespace Isotope\Model\Payment;
 
+use Codefog\HasteBundle\StringParser;
 use Contao\Input;
 use Contao\Module;
+use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
@@ -127,6 +128,9 @@ class Payone extends Postsale
             'param'             => 'paymentMethodPayone' . $this->id
         ];
 
+        /** @var StringParser $stringParser */
+        $stringParser = System::getContainer()->get(StringParser::class);
+
         foreach ($objOrder->getItems() as $objItem) {
 
             // Set the active product for insert tags replacement
@@ -152,9 +156,9 @@ class Payone extends Postsale
             $arrData['id[' . ++$i . ']'] = $objItem->getSku();
             $arrData['pr[' . $i . ']']   = $this->formatAmount($objItem->getPrice());
             $arrData['no[' . $i . ']']   = $objItem->quantity;
-            $arrData['de[' . $i . ']']   = StringUtil::convertToText(
+            $arrData['de[' . $i . ']']   = $stringParser->convertToText(
                 $objItem->getName() . $strConfig,
-                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                StringParser::NO_TAGS | StringParser::NO_BREAKS | StringParser::NO_INSERTTAGS | StringParser::NO_ENTITIES
             );
         }
 
@@ -167,9 +171,9 @@ class Payone extends Postsale
             $arrData['id[' . ++$i . ']'] = 'surcharge' . $k;
             $arrData['pr[' . $i . ']']   = $this->formatAmount($objSurcharge->total_price);
             $arrData['no[' . $i . ']']   = '1';
-            $arrData['de[' . $i . ']']   = StringUtil::convertToText(
+            $arrData['de[' . $i . ']']   = $stringParser->convertToText(
                 $objSurcharge->label,
-                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                StringParser::NO_TAGS | StringParser::NO_BREAKS | StringParser::NO_INSERTTAGS | StringParser::NO_ENTITIES
             );
         }
 
@@ -183,10 +187,10 @@ class Payone extends Postsale
         $objTemplate->data            = $arrData;
         $objTemplate->hash            = $strHash;
         $objTemplate->billing_address = $objOrder->getBillingAddress()->row();
-        $objTemplate->headline        = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
-        $objTemplate->message         = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
-        $objTemplate->slabel          = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
-        $objTemplate->noscript = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
+        $objTemplate->headline        = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message         = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel          = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }

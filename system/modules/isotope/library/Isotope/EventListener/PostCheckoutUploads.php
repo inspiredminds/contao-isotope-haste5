@@ -11,11 +11,13 @@
 
 namespace Isotope\EventListener;
 
+use Codefog\HasteBundle\StringParser;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\FrontendUser;
+use Contao\StringUtil;
+use Contao\System;
 use Haste\Util\FileUpload;
-use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
@@ -32,7 +34,7 @@ class PostCheckoutUploads
             ++$position;
 
             $hasChanges = false;
-            $configuration = \Contao\StringUtil::deserialize($item->configuration);
+            $configuration = StringUtil::deserialize($item->configuration);
 
             if (!\is_array($configuration)) {
                 continue;
@@ -96,7 +98,10 @@ class PostCheckoutUploads
             $userData = FrontendUser::getInstance()->getData();
             unset($userData['password']);
 
-            StringUtil::flatten(
+            /** @var StringParser $stringParser */
+            $stringParser = System::getContainer()->get(StringParser::class);
+
+            $stringParser->flatten(
                 $userData,
                 'member',
                 $tokens
@@ -115,10 +120,13 @@ class PostCheckoutUploads
     {
         $tokens = $this->generateTokens($order, $item, $position, $total, $attribute, $source);
 
-        $targetFolder = StringUtil::recursiveReplaceTokensAndTags(
+        /** @var StringParser $stringParser */
+        $stringParser = System::getContainer()->get(StringParser::class);
+
+        $targetFolder = $stringParser->recursiveReplaceTokensAndTags(
             $attribute->checkoutTargetFolder,
             $tokens,
-            StringUtil::NO_TAGS | StringUtil::NO_BREAKS
+            StringParser::NO_TAGS | StringParser::NO_BREAKS
         );
 
         if ($attribute->doNotOverwrite) {
@@ -127,10 +135,10 @@ class PostCheckoutUploads
             $tokens['file_target'] = $tokens['file_name'];
         }
 
-        $targetFile = StringUtil::recursiveReplaceTokensAndTags(
+        $targetFile = $stringParser->recursiveReplaceTokensAndTags(
             $attribute->checkoutTargetFile,
             $tokens,
-            StringUtil::NO_TAGS | StringUtil::NO_BREAKS
+            StringParser::NO_TAGS | StringParser::NO_BREAKS
         );
 
         $file = new File($source);

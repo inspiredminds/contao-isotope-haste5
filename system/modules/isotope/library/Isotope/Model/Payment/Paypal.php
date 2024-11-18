@@ -11,12 +11,12 @@
 
 namespace Isotope\Model\Payment;
 
+use Codefog\HasteBundle\StringParser;
 use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\StringUtil as HasteStringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Product;
@@ -122,6 +122,9 @@ class Paypal extends Postsale
         $fltDiscount = 0;
         $i           = 0;
 
+        /** @var StringParser $stringParser */
+        $stringParser = System::getContainer()->get(StringParser::class);
+
         foreach ($objOrder->getItems() as $objItem) {
 
             // Set the active product for insert tags replacement
@@ -144,9 +147,9 @@ class Paypal extends Postsale
                 $strConfig = ' (' . implode(', ', $arrConfig) . ')';
             }
 
-            $strName = HasteStringUtil::convertToText(
+            $strName = $stringParser->convertToText(
                 $objItem->getName() . $strConfig,
-                HasteStringUtil::NO_TAGS | HasteStringUtil::NO_BREAKS | HasteStringUtil::NO_INSERTTAGS | HasteStringUtil::NO_ENTITIES
+                StringParser::NO_TAGS | StringParser::NO_BREAKS | StringParser::NO_INSERTTAGS | StringParser::NO_ENTITIES
             );
 
             // Make sure name is not empty, otherwise PayPal ignores all subsequent products
@@ -173,9 +176,9 @@ class Paypal extends Postsale
                 continue;
             }
 
-            $arrData['item_name_' . ++$i] = HasteStringUtil::convertToText(
+            $arrData['item_name_' . ++$i] = $stringParser->convertToText(
                 $objSurcharge->label,
-                HasteStringUtil::NO_TAGS | HasteStringUtil::NO_BREAKS | HasteStringUtil::NO_INSERTTAGS | HasteStringUtil::NO_ENTITIES
+                StringParser::NO_TAGS | StringParser::NO_BREAKS | StringParser::NO_INSERTTAGS | StringParser::NO_ENTITIES
             );
             $arrData['amount_' . $i]      = $objSurcharge->total_price;
         }
