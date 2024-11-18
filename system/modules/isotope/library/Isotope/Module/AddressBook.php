@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\Form\Form;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\FrontendUser;
@@ -20,9 +21,8 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\User;
-use Haste\Form\Form;
-use Isotope\Helper\Generator\RowClass;
 use Isotope\CompatibilityHelper;
+use Isotope\Helper\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
@@ -201,11 +201,10 @@ class AddressBook extends Module
             'POST',
             function(Form $objForm) {
                 return Input::post('FORM_SUBMIT') === $objForm->getFormId();
-            },
-            isset($this->tableless) ? (bool) $this->tableless : true
+            }
         );
 
-        $objForm->bindModel($objAddress);
+        $objForm->setBoundModel($objAddress);
 
         // Add form fields and modify for the address book
         $arrFields = $this->arrFields;
@@ -265,7 +264,7 @@ class AddressBook extends Module
             }
         }
 
-        $objForm->addToTemplate($this->Template);
+        $objForm->addToObject($this->Template);
 
         // Predefine the group order (other groups will be appended automatically)
         $arrGroups  = array();

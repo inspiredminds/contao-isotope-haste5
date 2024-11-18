@@ -11,11 +11,11 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\Form\Form;
 use Contao\Controller;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Form\Form;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -98,11 +98,10 @@ class CartAddress extends Module
             'POST',
             function(Form $objHaste) {
                 return Input::post('FORM_SUBMIT') === $objHaste->getFormId();
-            },
-            isset($this->tableless) ? (bool) $this->tableless : true
+            }
         );
 
-        $objForm->bindModel($objAddress);
+        $objForm->setBoundModel($objAddress);
 
         // Add form fields
         $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields, $useBilling) {
@@ -164,7 +163,7 @@ class CartAddress extends Module
             $this->jumpToOrReload($this->jumpTo);
         }
 
-        $objForm->addToTemplate($this->Template);
+        $objForm->addToObject($this->Template);
 
         // Predefine the group order (other groups will be appended automatically)
         $arrGroups  = array();
