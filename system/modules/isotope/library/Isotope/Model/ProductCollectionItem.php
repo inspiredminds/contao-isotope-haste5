@@ -15,7 +15,7 @@ use Contao\Database;
 use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Helper\Data\Plain;
+use Haste\Data\Plain;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;

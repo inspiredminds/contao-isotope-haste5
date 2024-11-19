@@ -75,6 +75,9 @@
     },
     "autoload": {
         "psr-0": {
+            "Haste\\": [
+                "system/modules/isotope/library"
+            ],
             "Isotope\\": [
                 "system/modules/isotope/library",
                 "system/modules/isotope_reports/library",

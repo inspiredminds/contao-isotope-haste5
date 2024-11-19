@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Helper\Generator;
+namespace Haste\Generator;
 
 use Contao\FormPassword;
 use Contao\StringUtil;

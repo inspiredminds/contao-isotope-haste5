@@ -17,7 +17,7 @@ use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
-use Isotope\Helper\Generator\RowClass;
+use Haste\Generator\RowClass;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeOrderStatusAware;

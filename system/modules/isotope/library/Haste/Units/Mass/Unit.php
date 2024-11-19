@@ -10,9 +10,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Helper\Units\Mass;
+namespace Haste\Units\Mass;
 
-use Isotope\Helper\Units\Converter;
+use Haste\Units\Converter;
 
 class Unit extends Converter
 {

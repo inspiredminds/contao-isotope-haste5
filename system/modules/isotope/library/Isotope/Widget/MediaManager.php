@@ -25,7 +25,7 @@ use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Isotope\Helper\Util\Debug;
+use Haste\Util\Debug;
 use Isotope\Model\Gallery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Terminal42\FineUploaderBundle\FileUpload;
