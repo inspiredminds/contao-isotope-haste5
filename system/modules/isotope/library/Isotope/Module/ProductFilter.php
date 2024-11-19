@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Codefog\HasteBundle\Formatter;
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -21,7 +22,6 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Codefog\HasteBundle\UrlParser;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;

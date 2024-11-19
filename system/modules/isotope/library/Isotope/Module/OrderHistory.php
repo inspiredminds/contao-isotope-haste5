@@ -12,11 +12,11 @@
 namespace Isotope\Module;
 
 use Codefog\HasteBundle\Formatter;
+use Codefog\HasteBundle\UrlParser;
 use Contao\Controller;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\System;
-use Codefog\HasteBundle\UrlParser;
 use Contao\PageModel;
 use Haste\Generator\RowClass;
 use Isotope\CompatibilityHelper;
