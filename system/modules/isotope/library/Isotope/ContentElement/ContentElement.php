@@ -12,9 +12,9 @@
 namespace Isotope\ContentElement;
 
 use Contao\ContentElement as Contao_ContentElement;
+use Haste\Util\Debug;
+use Haste\Util\RepositoryVersion;
 use Isotope\CompatibilityHelper;
-use Isotope\Helper\Util\Debug;
-use Isotope\Helper\Util\RepositoryVersion;
 use Isotope\Isotope;
 
 abstract class ContentElement extends Contao_ContentElement

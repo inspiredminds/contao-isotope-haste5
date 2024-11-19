@@ -20,7 +20,7 @@ use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Helper\Generator\RowClass;
+use Haste\Generator\RowClass;
 use Isotope\CheckoutStep\OrderConditions;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeCheckoutStep;

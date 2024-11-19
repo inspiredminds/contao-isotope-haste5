@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Helper\Image;
+namespace Haste\Image;
 
 use Contao\File;
 use Contao\Files;
