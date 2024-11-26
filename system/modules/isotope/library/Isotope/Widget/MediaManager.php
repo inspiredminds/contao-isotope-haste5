@@ -113,8 +113,7 @@ class MediaManager extends Widget implements \uploadable
     {
         Message::reset();
 
-        $objUploader = new FileUpload();
-        $objUploader->setName($this->strName);
+        $objUploader = new FileUpload($this->strName);
         $uploadFolder = $this->strTempFolder;
 
         // Convert the $_FILES array to Contao format
