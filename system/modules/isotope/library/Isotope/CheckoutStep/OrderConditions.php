@@ -82,7 +82,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
             }
         }
 
-        if (!$this->objForm->hasFields()) {
+        if (!$this->objForm->hasFormFields()) {
             $this->blnError = false;
             return '';
         }
@@ -136,7 +136,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
         }
 
         $objTemplate = new \Isotope\Template('iso_checkout_order_conditions');
-        $this->objForm->addToTemplate($objTemplate);
+        $this->objForm->addToObject($objTemplate);
 
         return $objTemplate->parse();
     }
