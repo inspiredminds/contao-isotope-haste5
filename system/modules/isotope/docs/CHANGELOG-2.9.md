@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.9.5 (2024-12-05)
+--------------------------
+
+- Fixed product Standard::getVariantIds() (#2552)
+- Fixed PHP8 issues
+- Updated translations
+
 
 Version 2.9.4 (2024-11-05)
 --------------------------
