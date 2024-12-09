@@ -261,7 +261,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $blnHasGuests    = false;
             $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
             $strQuery        = '
-                SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups
+                SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups, tl_iso_product.guests
                 FROM tl_iso_product
                 WHERE
                     pid=' . $this->getProductId() . "
@@ -300,12 +300,12 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 if ($isMember
                     && $blnHasGuests
                     && $objVariants->guests
-                    && (!$blnHasProtected || $objVariants->protected)
+                    && (!$blnHasProtected || !$objVariants->protected)
                 ) {
                     continue;
                 }
 
-                if ($blnHasProtected && $objVariants->protected) {
+                if ($isMember && $blnHasProtected && $objVariants->protected) {
                     $groups = StringUtil::deserialize($objVariants->groups);
 
                     if (empty($groups) || !\is_array($groups) || !\count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
