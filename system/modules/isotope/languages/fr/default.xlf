@@ -198,6 +198,7 @@
       </trans-unit>
       <trans-unit id="MSC.reorderLabel">
         <source>Reorder</source>
+        <target>Commander à nouveau</target>
       </trans-unit>
       <trans-unit id="MSC.perPageLabel">
         <source>Products Per Page</source>
@@ -225,6 +226,7 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_all_to_cart">
         <source>Add All To Cart</source>
+        <target>Ajouter tout au panier</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.update_cart">
         <source>Update Cart</source>
@@ -327,6 +329,7 @@
       </trans-unit>
       <trans-unit id="MSC.reorderConfirmation">
         <source>The products of the selected order have been added to your shopping cart.</source>
+        <target>Le produit séléctionné a bien été ajouté à votre panier.</target>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkTitle">
         <source>Edit %s</source>
@@ -349,6 +352,7 @@
       </trans-unit>
       <trans-unit id="MSC.shippingLabel">
         <source>Shipping (%s)</source>
+        <target>Livraison (%s)</target>
       </trans-unit>
       <trans-unit id="MSC.paymentLabel">
         <source>Payment (%s)</source>
