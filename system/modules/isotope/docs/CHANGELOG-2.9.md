@@ -1,6 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.9.6 (2024-12-18)
+--------------------------
+
+- Use first limit as default (#2540)
+- Keep prdocut `auto_item` unused in `AbstractProduct::getCssClass()` (#2554)
+- Show field name in cumulative filter config
+
+
 Version 2.9.5 (2024-12-05)
 --------------------------
 
